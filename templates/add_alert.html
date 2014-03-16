@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Grained. Add Alert{% endblock %}
+
+{% block additional_includes %}
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="/static/dajax/jquery.dajax.core.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="/static/js/add_alert.js"></script>
+<script>
+function show_menu() {
+	var el = document.getElementById("nav_all");
+	
+	el.style.display = (el.style.display != 'none' ? 'none' : 'block' );
+}
+
+$(function() {
+	var friend_handles = "{{screen_name_list}}";
+	friend_handles = friend_handles.split(",");
+	
+	var name_list = "{{name_list}}";
+	name_list = name_list.split(",");
+	
+	var data = [];
+	for(var i=0; i<name_list.length; i++)  {
+		data.push({label: name_list[i], value: friend_handles[i]});
+	}
+
+	$( "#follow_user" ).autocomplete({
+	source: data
+	});
+});
+
+window.onload=function(){
+	document.getElementById("alert_msg").style.display = "block";
+}
+</script>
+{% endblock %}
+
+{% block nav %}
+<div id="menu_button"><a href="javascript:void(0);" onclick="show_menu();">Menu</a><div class="clear"></div></div>
+<div id="nav_all">
+<div id="nav_left">
+<ul>
+	<li><a href="/dashboard/">Dashboard</a></li>
+	<li><a href="/add/">Add Alert</a></li>
+</ul>
+</div>
+<div id="nav_right">
+<ul>
+	<li><a href="/settings/">Settings</a></li>
+	<li><a href="/logout/">Logout</a></li>
+</ul>
+</div>
+</div>
+{% endblock %}
+
+{% block content %}
+<h1>Add Alert</h1>
+<div id="dashboard">
+	<div class="block" id="block">
+		{% if alerts_count < 10 %}
+		<form name="addAlertForm" id="addAlertForm" method="POST" action="">{% csrf_token %}
+		<div id="status"></div>
+		<h3>Setup an Alert when @InsertHandle Tweets</h3>
+		<label for="follow_user">Screenname</label>
+		<input type="text" id="follow_user" name="follow_user" placeholder="@CNN" style="width: 240px;"/></br>
+		<h3>Add Key Words so we'll know when to Alert you</h3>
+		<div id="alert_msg" class="alert_msg">Hint : Press Enter Inside Textbox To Add Keyword</div>
+
+		<label for="key_words">Key Words</label>
+		<input type="text" id="key_words" name="key_words" onkeydown="if (event.keyCode == 13) add_key_word()" placeholder="Ukraine"/>
+		
+		<input type="hidden" id="key_words_list" name="key_words_list" />
+		<div id="word_list" style="display: block;"></div><div class="clear"></div>
+		<div class="add_button"><a href="javascript:void(0);" onclick="add_key_word();">Add Word</a></div>
+		</br>
+		<div class="button"><a href="javascript:void(0);" onclick="create();">Create Alert</a></div>
+		</form>
+		{% else %}
+		<p>You already have 10 alerts. Remove one of your old alerts to create another one!</p>
+		{% endif %}
+	</div>
+
+</div>
+{% endblock %}

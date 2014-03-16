@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Grained. Settings{% endblock %}
+
+{% block additional_includes %}
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="/static/dajax/jquery.dajax.core.js"></script>
+<script src="/static/js/settings.js"></script>
+<script>
+function show_menu() {
+	var el = document.getElementById("nav_all");
+	
+	el.style.display = (el.style.display != 'none' ? 'none' : 'block' );
+}
+
+window.onload=function(){
+	var email_alert = '{{email_alert}}';
+	var sms_alert = '{{sms_alert}}';
+	
+	document.getElementById("phone").value = "{{phone}}";
+	document.getElementById("email_address").value = "{{email}}";
+	
+	if (email_alert == 'True') {
+		$('#email').prop('checked', true);
+	}
+	if (sms_alert == 'True') {
+		$('#sms').prop('checked', true);
+	}
+};
+
+</script>
+{% endblock %}
+
+{% block nav %}
+<div id="menu_button"><a href="javascript:void(0);" onclick="show_menu();">Menu</a><div class="clear"></div></div>
+<div id="nav_all">
+<div id="nav_left">
+<ul>
+	<li><a href="/dashboard/">Dashboard</a></li>
+	<li><a href="/add/">Add Alert</a></li>
+</ul>
+</div>
+<div id="nav_right">
+<ul>
+	<li><a href="/settings/">Settings</a></li>
+	<li><a href="/logout/">Logout</a></li>
+</ul>
+</div>
+</div>
+{% endblock %}
+
+{% block content %}
+<h1>Settings</h1>
+<div id="dashboard">
+	<div class="block">
+		<div id="status"></div>
+		<p>Choose whether you want to be alerted by Email, Text Msg or both</p>
+		<label for="email">Email</label>
+		<input type="checkbox" id="email" name="email"></br>
+		<label for="sms">Txt Msg</label>
+		<input type="checkbox" id="sms" name="sms"></br>
+		<p>Enter your 10 digit US Phone #, without any spaces or characters</p>
+		<label for="phone">Phone #</label>
+		<input type="text" id="phone" name="phone" maxlength="10" style="width: 130px;"/></br>
+		<label for="email_address">Email</label>
+		<input type="text" id="email_address" name="email_address" style="width: 230px;" />
+		
+		<div class="button"><a href="javascript:void(0);" onclick="update_settings();">Update</a></div>
+		<div class="clear"></div>
+	</div>
+</div>
+{% endblock %}

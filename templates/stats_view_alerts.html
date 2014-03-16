@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Grained. Complete Registration{% endblock %}
+
+{% block additional_includes %}
+<link href="/static/css/statistics.css" rel="stylesheet">
+{% endblock %}
+
+{% block nav %}
+<div id="menu_button"><a href="javascript:void(0);" onclick="show_menu();">Menu</a><div class="clear"></div></div>
+<div id="nav_all">
+<div id="nav_left">
+<ul>
+	<li><a href="/dashboard/">Dashboard</a></li>
+	<li><a href="/add/">Add Alert</a></li>
+</ul>
+</div>
+<div id="nav_right">
+<ul>
+	<li><a href="/settings/">Settings</a></li>
+	<li><a href="/logout/">Logout</a></li>
+</ul>
+</div>
+</div>
+{% endblock %}
+
+{% block content %}
+<h1>Admin : Alerts </h1>
+<div id="dashboard">
+	{% for alert in alerts %}
+	<div class="list_item">
+		<div id="status"></div>
+		<div class="user">{{alert.message}}</div>
+		<div class="clear"></div>
+		<h4>{{alert.timestamp}} | <b>{{alert.alert_type}}</b> </h4>
+	</div>
+	{% endfor %}
+	{% if not alerts %}
+	<div class="block">
+		<div id="status"><div class="error">There are no alerts for this person</div></div>
+	</div>
+	{% endif %}
+</div>
+{% endblock %}

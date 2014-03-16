@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Grained. Remove Alert{% endblock %}
+
+{% block additional_includes %}
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="/static/dajax/jquery.dajax.core.js"></script>
+<script>
+function show_menu() {
+	var el = document.getElementById("nav_all");
+	
+	el.style.display = (el.style.display != 'none' ? 'none' : 'block' );
+}
+function remove_alert() {
+	var follow_user = "{{follow_user}}";
+	Dajaxice.grain.remove_alert(Dajax.process,{'follow_user':follow_user});
+}
+</script>
+{% endblock %}
+
+{% block nav %}
+<div id="menu_button"><a href="javascript:void(0);" onclick="show_menu();">Menu</a><div class="clear"></div></div>
+<div id="nav_all">
+<div id="nav_left">
+<ul>
+	<li><a href="/dashboard/">Dashboard</a></li>
+	<li><a href="/add/">Add Alert</a></li>
+</ul>
+</div>
+<div id="nav_right">
+<ul>
+	<li><a href="/settings/">Settings</a></li>
+	<li><a href="/logout/">Logout</a></li>
+</ul>
+</div>
+</div>
+{% endblock %}
+
+{% block content %}
+<h1>Remove Alert</h1>
+<div id="dashboard">
+	<div class="block" id="block">
+		{% if follow_user != None %}
+		<div id="status"></div>
+		<div class="user">Are you sure you want to remove Alerts for <b>@{{follow_user}}</b></div>
+		<div class="button"><a href="javascript:void(0);" onclick="remove_alert();">Yes, I'm Sure</a></div>
+		{% else %}
+		<div id="status"><div class="error">This alert doesn't exist</div></div>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Grained.{% endblock %}
+
+{% block additional_includes %}
+<meta name="description" content="Get alerts via Text and Email when people you follow on Twitter tweet about things you care about.">
+<meta name="keywords" content="Twitter,Alert,Notifications,Relevant,SMS,Text,Email">
+<meta charset="UTF-8">
+{% endblock %}
+
+{% block content %}
+<div id="info_box">
+	<div id="top">
+		<h1>Get Tweet Alerts</h1> <h6>via</h6>
+	</div>
+	
+	<div id="left">
+		<img src="/static/images/email_icon.png" alt="email"/>
+		<h3>Email</h3>
+	</div>
+	<div id="middle">+</div>
+	<div id="right">
+		<img src="/static/images/phone_icon.png" alt="text messages"/>
+		<h3>Text Msg</h3>
+	</div>
+	<div class="clear"></div>
+	
+	<p>Get alerts when people you follow talk about things you're interested in knowing about.</p>
+	<h4>Completely Free</h4>
+	
+	<div id="signup"><a href="{% url twitter_login %}">Sign Up Via Twitter</a></div>
+</div>
+
+{% endblock %}

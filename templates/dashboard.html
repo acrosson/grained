@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Grained. Dashboard{% endblock %}
+
+{% block additional_includes %}
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="/static/dajax/jquery.dajax.core.js"></script>
+<script src="/static/js/dashboard.js"></script>
+<script>
+function show_menu() {
+	var el = document.getElementById("nav_all");
+	
+	el.style.display = (el.style.display != 'none' ? 'none' : 'block' );
+}
+</script>
+{% endblock %}
+
+{% block nav %}
+<div id="menu_button"><a href="javascript:void(0);" onclick="show_menu();">Menu</a><div class="clear"></div></div>
+<div id="nav_all">
+<div id="nav_left">
+<ul>
+	<li><a href="/dashboard/">Dashboard</a></li>
+	<li><a href="/add/">Add Alert</a></li>
+</ul>
+</div>
+<div id="nav_right">
+<ul>
+	<li><a href="/settings/">Settings</a></li>
+	<li><a href="/logout/">Logout</a></li>
+</ul>
+</div>
+</div>
+{% endblock %}
+
+{% block content %}
+{% if account_linked == None %}
+<div id="link_account">
+<h1>Add a Phone # or Email</h1>
+<p>To Receive Alerts In Real-Time</p>
+<p>Update your info <a href="/settings/">Here</a></p>
+</div>
+{% endif %}
+<h1>Dashboard</h1>
+<div id="dashboard">
+	{% for follow_user, keywords, alerts, id, word_string in grain_objects %}
+	<div class="block">
+		<div id="status_{{follow_user}}"></div>
+		<div class="label"><h4>User</h4></div>
+		<div class="user">@{{follow_user}}</div>
+		<div class="clear"></div>
+		<div class="label"><h4>Key Words</h4></div>
+		<input type="text" name="key_words_{{follow_user}}" id="key_words_{{follow_user}}" style="display: none;" onkeydown="if (event.keyCode == 13) add_key_word('{{follow_user}}')"/>
+
+		<input type="hidden" id="key_words_list_{{follow_user}}" name="key_words_list_{{follow_user}}" value="{{word_string}}"/>
+		<div id="key_words_display_{{follow_user}}">
+		<ul>
+		{% for word in keywords %}
+			<li><a href="#">{{word}}</a></li>
+		{% endfor %}
+		</ul>
+		</div>
+		<div class="clear"></div>
+		</br>
+		<div class="num_alerts">{{alerts}}</div><div class="num_label"><a href="/view-alerts/{{follow_user}}/">Alerts</a></div>
+		<div class="config">
+			<a style="display: none;" id="save_changes_{{follow_user}}" href="javascript:void(0)" onclick="update('{{follow_user}}')">Save Changes</a>
+			<a id="edit_{{follow_user}}" href="javascript:void(0)" onclick="edit_user('{{follow_user}}')">Edit</a> |
+			<a href="/remove/{{follow_user}}/">Remove</a></div>
+		<div class="clear"></div>
+	</div>
+	{% endfor %}
+	{% if not grain_objects %}
+	<div class="block">
+		<div class="user">You have not created any alerts yet. Click the <b>Add Alert</b> button in the menu to get started</div>
+		<div class="clear"></div>
+	</div>
+	{% endif %}
+</div>
+{% endblock %}
